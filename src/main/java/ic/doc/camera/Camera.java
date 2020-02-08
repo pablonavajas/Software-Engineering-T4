@@ -1,6 +1,6 @@
 package ic.doc.camera;
 
-public class Camera implements WriteListener{
+public class Camera implements WriteListener {
 
   private final Sensor sensor;
   private final MemoryCard memoryCard;
