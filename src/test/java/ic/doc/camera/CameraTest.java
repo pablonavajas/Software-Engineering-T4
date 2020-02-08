@@ -14,6 +14,7 @@ public class CameraTest {
   MemoryCard memoryCard = context.mock(MemoryCard.class);
 
   Camera cam = new Camera(sensor, memoryCard);
+  byte[] data = {1};
 
   @Test
   public void switchingTheCameraOnPowersUpTheSensor() {
@@ -28,12 +29,11 @@ public class CameraTest {
   @Test
   public void pressShutterWithCameraOnCopiesData() {
 
-    byte[] data = {1};
-
     context.checking(new Expectations() {{
       exactly(1).of(sensor).powerUp();
-      exactly(1).of(sensor).readData(); will(returnValue(data));
-      exactly(1).of(memoryCard).write(data);
+      exactly(1).of(sensor).readData();
+      will(returnValue(data));
+      exactly(1).of(memoryCard).write((data));
     }});
 
     cam.powerOn();
@@ -64,11 +64,10 @@ public class CameraTest {
   @Test
   public void switchingCameraOffWhileCopyingDataDoesNothing() {
 
-    byte[] data = {1};
-
     context.checking(new Expectations() {{
       exactly(1).of(sensor).powerUp();
-      exactly(1).of(sensor).readData(); will(returnValue(data));
+      exactly(1).of(sensor).readData();
+      will(returnValue(data));
       exactly(1).of(memoryCard).write(data);
       never(sensor).powerDown();
     }});
@@ -81,11 +80,10 @@ public class CameraTest {
   @Test
   public void switchingCameraOffWhileCopyingDataFinishedWorks() {
 
-    byte[] data = {1};
-
     context.checking(new Expectations() {{
       exactly(1).of(sensor).powerUp();
-      exactly(1).of(sensor).readData(); will(returnValue(data));
+      exactly(1).of(sensor).readData();
+      will(returnValue(data));
       exactly(1).of(memoryCard).write(data);
       exactly(1).of(sensor).powerDown();
     }});
